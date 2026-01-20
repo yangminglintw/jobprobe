@@ -1,0 +1,17 @@
+# environments.yaml for Docker environment
+
+environments:
+  # Rundeck in Docker network
+  rundeck-docker:
+    type: rundeck
+    url: http://rundeck:4440
+    api_version: 41
+    auth:
+      token: ${RUNDECK_LOCAL_TOKEN}
+
+  # Mock API in Docker network
+  mock-api:
+    type: http
+    url: http://mock-api:8000
+    auth:
+      type: none

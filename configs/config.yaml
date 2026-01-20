@@ -1,0 +1,17 @@
+# config.yaml
+# Global settings for jprobe
+
+# Default values for all jobs
+defaults:
+  timeout: 10m                       # Default job timeout
+  poll_interval: 10s                 # Default poll interval for async jobs
+
+# Output settings
+output:
+  # Console settings
+  console:
+    colors: true                     # Enable colored output
+    verbose: false                   # Verbose mode
+
+  # Default output format: console, json
+  format: console

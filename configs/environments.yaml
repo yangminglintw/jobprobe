@@ -1,0 +1,18 @@
+# environments.yaml
+# Define target environments
+
+environments:
+  # Rundeck Local (for testing)
+  rundeck-local:
+    type: rundeck
+    url: http://localhost:4440
+    api_version: 41
+    auth:
+      token: ${RUNDECK_LOCAL_TOKEN}
+
+  # HTTP API Local
+  api-local:
+    type: http
+    url: http://localhost:8000
+    auth:
+      type: none

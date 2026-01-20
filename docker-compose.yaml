@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  # ============================================================
+  # Rundeck - Local test instance
+  # ============================================================
+  rundeck:
+    image: rundeck/rundeck:5.0.0
+    container_name: jobprobe-rundeck
+    ports:
+      - "4440:4440"
+    environment:
+      RUNDECK_GRAILS_URL: http://localhost:4440
+      RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+      RUNDECK_DATABASE_URL: jdbc:mariadb://mariadb:3306/rundeck?autoReconnect=true&useSSL=false
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: rundeck
+    volumes:
+      - rundeck-data:/home/rundeck/server/data
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4440"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    networks:
+      - jobprobe-net
+
+  # Rundeck database
+  mariadb:
+    image: mariadb:10.11
+    container_name: jobprobe-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rundeck
+      MYSQL_USER: rundeck
+      MYSQL_PASSWORD: rundeck
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - jobprobe-net
+
+  # ============================================================
+  # Mock API - For HTTP health check testing
+  # ============================================================
+  mock-api:
+    build:
+      context: ./test/mock-api
+      dockerfile: Dockerfile
+    container_name: jobprobe-mock-api
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - jobprobe-net
+
+  # ============================================================
+  # JProbe - The tool itself (for integration testing)
+  # ============================================================
+  jprobe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VERSION: ${VERSION:-dev}
+        COMMIT: ${COMMIT:-unknown}
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+    container_name: jprobe
+    environment:
+      RUNDECK_LOCAL_TOKEN: ${RUNDECK_LOCAL_TOKEN:-admin}
+    volumes:
+      - ./configs/docker:/etc/jprobe
+    depends_on:
+      mock-api:
+        condition: service_healthy
+    networks:
+      - jobprobe-net
+    # Default: run health checks
+    command: ["run", "--config", "/etc/jprobe"]
+
+volumes:
+  rundeck-data:
+  mariadb-data:
+
+networks:
+  jobprobe-net:
+    driver: bridge

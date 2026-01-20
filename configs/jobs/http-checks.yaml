@@ -1,0 +1,34 @@
+# jobs/http-checks.yaml
+# HTTP endpoint health checks
+
+jobs:
+  # Health Endpoint
+  - name: api-health
+    description: "Main API health check"
+    environment: api-local
+    type: http
+    method: GET
+    path: /health
+    assertions:
+      status_code: 200
+      max_duration: 500ms
+      json:
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - health
+      - critical
+
+  # Readiness Endpoint
+  - name: api-readiness
+    description: "API readiness check"
+    environment: api-local
+    type: http
+    method: GET
+    path: /ready
+    assertions:
+      status_code: 200
+    tags:
+      - api
+      - readiness

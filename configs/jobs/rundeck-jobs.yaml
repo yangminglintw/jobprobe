@@ -1,0 +1,21 @@
+# jobs/rundeck-jobs.yaml
+# Rundeck job definitions
+
+jobs:
+  # Example Rundeck job
+  - name: example-job
+    description: "Example Rundeck job"
+    environment: rundeck-local
+    type: rundeck
+    job_id: example-job-uuid
+    project: example-project
+    options:
+      mode: test
+    timeout: 5m
+    poll_interval: 10s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - example
+      - rundeck

@@ -1,0 +1,64 @@
+# HTTP health checks for Docker environment
+
+jobs:
+  # Mock API health check
+  - name: mock-api-health
+    description: "Mock API health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /health
+    assertions:
+      status_code: 200
+      max_duration: 1s
+      json:
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - health
+      - critical
+
+  # Mock API readiness check
+  - name: mock-api-readiness
+    description: "Mock API readiness check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /ready
+    assertions:
+      status_code: 200
+      json:
+        - path: $.ready
+          equals: true
+        - path: $.database
+          equals: "connected"
+    tags:
+      - api
+      - readiness
+
+  # Echo endpoint test
+  - name: mock-api-echo
+    description: "Mock API echo test"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /echo
+    assertions:
+      status_code: 200
+    tags:
+      - api
+      - test
+
+  # Stats endpoint
+  - name: mock-api-stats
+    description: "Mock API stats"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /stats
+    assertions:
+      status_code: 200
+    tags:
+      - api
+      - stats
