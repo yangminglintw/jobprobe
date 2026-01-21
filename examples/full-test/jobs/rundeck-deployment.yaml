@@ -1,0 +1,164 @@
+# rundeck-deployment.yaml - Deployment Rundeck jobs
+# 10 jobs in this category
+
+jobs:
+
+  - name: blue-green-switch
+    description: "Switch blue-green deployment"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 17c240dc-4b8d-46df-b064-f7edaa895187
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: deploy-api-prod
+    description: "Deploy API to production"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 60846a63-77ff-4d40-b651-3eee8d4b7733
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: deploy-api-staging
+    description: "Deploy API to staging"
+    environment: rundeck-test
+    type: rundeck
+    job_id: c9d2acda-c6ee-41af-a1bc-f08fa13133e7
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: deploy-web-prod
+    description: "Deploy web app to production"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 157616e1-843b-42bc-b43a-151551c99f17
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: deploy-web-staging
+    description: "Deploy web app to staging"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 2c4e0596-2376-4275-8d85-7c835ac330b5
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: deploy-worker-prod
+    description: "Deploy worker to production"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 8bc0be96-3a16-4842-9934-1457c93a96b1
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: rollback-api-prod
+    description: "Rollback API in production"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 12e0be04-1e2d-45cd-9f07-9b8546dca630
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: rollback-web-prod
+    description: "Rollback web app in production"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 76f26741-4ce8-4d49-acec-365cf51b88e1
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: scale-api-down
+    description: "Scale down API instances"
+    environment: rundeck-test
+    type: rundeck
+    job_id: dc3211ce-4929-4e89-af87-651d3fc8e022
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical
+
+  - name: scale-api-up
+    description: "Scale up API instances"
+    environment: rundeck-test
+    type: rundeck
+    job_id: aae85581-07f7-4e2e-b85d-62169a950c7c
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - deployment
+      - rundeck
+      - critical

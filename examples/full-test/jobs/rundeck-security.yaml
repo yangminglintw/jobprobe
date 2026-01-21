@@ -1,0 +1,84 @@
+# rundeck-security.yaml - Security Rundeck jobs
+# 5 jobs in this category
+
+jobs:
+
+  - name: audit-access-logs
+    description: "Audit access logs"
+    environment: rundeck-test
+    type: rundeck
+    job_id: a3ccd700-1b11-4f8a-b54c-fcb493ba8301
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - security
+      - rundeck
+      - critical
+
+  - name: check-certificate-expiry
+    description: "Check certificate expiry"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 07c225af-d5fd-4b38-8b94-4240c65d9dff
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - security
+      - rundeck
+      - critical
+
+  - name: rotate-api-keys
+    description: "Rotate API keys"
+    environment: rundeck-test
+    type: rundeck
+    job_id: f5fc8921-5fe6-41ac-ad15-d4a0283aced6
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - security
+      - rundeck
+      - critical
+
+  - name: scan-vulnerabilities
+    description: "Scan for vulnerabilities"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 2891c9a5-af8d-4259-b4d6-0eab6c23fbf9
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - security
+      - rundeck
+      - critical
+
+  - name: update-firewall-rules
+    description: "Update firewall rules"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 3a00a035-e2d2-4c88-9d83-95819fcea72b
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - security
+      - rundeck
+      - critical

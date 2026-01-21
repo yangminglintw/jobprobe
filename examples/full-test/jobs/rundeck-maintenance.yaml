@@ -1,0 +1,124 @@
+# rundeck-maintenance.yaml - Maintenance Rundeck jobs
+# 8 jobs in this category
+
+jobs:
+
+  - name: archive-old-data
+    description: "Archive old data"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 28635102-9265-4f82-8b5a-060219dda409
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: cleanup-temp-files
+    description: "Cleanup temporary files"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 8846d9e2-1bfc-4b39-9390-fb0efc5464fc
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: clear-cache
+    description: "Clear application cache"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 493efff2-df40-450b-befa-52a85e3af72e
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: compact-database
+    description: "Compact database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 51fff3e8-c7b0-4668-91ea-f9ba76261225
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: purge-expired-sessions
+    description: "Purge expired sessions"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 8ddd669f-4cdb-4281-9f82-78e2ea617182
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: rebuild-search-index
+    description: "Rebuild search index"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 12974309-5828-4a58-9f63-1c774d58bacf
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: rotate-logs
+    description: "Rotate application logs"
+    environment: rundeck-test
+    type: rundeck
+    job_id: d46e9491-094a-4b11-8d6b-d33f0d0af914
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck
+
+  - name: update-geoip-database
+    description: "Update GeoIP database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 2a779bb5-6d62-4750-b2c4-58fa09825968
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - maintenance
+      - rundeck

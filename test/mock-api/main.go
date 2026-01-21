@@ -3,6 +3,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -53,6 +54,18 @@ func main() {
 
 	// Auth test endpoint
 	mux.HandleFunc("/api/v1/auth/validate", authValidateHandler)
+
+	// Additional endpoints for comprehensive testing
+	mux.HandleFunc("/live", liveHandler)
+	mux.HandleFunc("/metrics", metricsHandler)
+	mux.HandleFunc("/version", versionHandler)
+	mux.HandleFunc("/api/v1/status", apiStatusHandler)
+	mux.HandleFunc("/api/v1/users/health", serviceHealthHandler("users"))
+	mux.HandleFunc("/api/v1/orders/health", serviceHealthHandler("orders"))
+	mux.HandleFunc("/api/v1/payments/health", serviceHealthHandler("payments"))
+	mux.HandleFunc("/api/v1/inventory/health", serviceHealthHandler("inventory"))
+	mux.HandleFunc("/api/v1/notifications/health", serviceHealthHandler("notifications"))
+	mux.HandleFunc("/api/v1/search/health", serviceHealthHandler("search"))
 
 	log.Printf("Mock API server starting on port %s", port)
 	if err := http.ListenAndServe(":"+port, loggingMiddleware(mux)); err != nil {
@@ -254,4 +267,61 @@ func parseInt(s string) (int, error) {
 		n = n*10 + int(c-'0')
 	}
 	return n, nil
+}
+
+func liveHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"alive": true,
+		"pid":   os.Getpid(),
+	})
+}
+
+func metricsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(`# HELP http_requests_total Total HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{method="GET",status="200"} ` + fmt.Sprintf("%d", requestCount.Load()) + `
+# HELP up Service is up
+# TYPE up gauge
+up 1
+`))
+}
+
+func versionHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"version":    "1.0.0",
+		"build":      "abc123",
+		"build_date": "2024-01-19",
+		"go_version": "go1.23",
+	})
+}
+
+func apiStatusHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status": "operational",
+		"services": map[string]string{
+			"database": "healthy",
+			"cache":    "healthy",
+			"queue":    "healthy",
+		},
+		"uptime_seconds": 86400,
+	})
+}
+
+func serviceHealthHandler(serviceName string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"service": serviceName,
+			"status":  "healthy",
+			"latency_ms": 5,
+			"connections": map[string]interface{}{
+				"active": 10,
+				"idle":   5,
+			},
+		})
+	}
 }

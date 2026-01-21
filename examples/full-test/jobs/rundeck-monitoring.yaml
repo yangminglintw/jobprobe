@@ -1,0 +1,124 @@
+# rundeck-monitoring.yaml - Monitoring Rundeck jobs
+# 8 jobs in this category
+
+jobs:
+
+  - name: check-api-health
+    description: "Check API health endpoints"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 15da0d8b-6af8-4080-9c9d-d49fdb762ac1
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: check-cache-health
+    description: "Check cache health"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 9cdc3eb8-2755-4ab5-abd2-b29aa5f043b9
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: check-database-health
+    description: "Check database health"
+    environment: rundeck-test
+    type: rundeck
+    job_id: d06849b1-165f-46c6-bb61-13ecc134791e
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: check-disk-usage
+    description: "Check disk usage"
+    environment: rundeck-test
+    type: rundeck
+    job_id: ebacc1e4-8d81-4903-a01d-a1c5d1e1efd7
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: check-memory-usage
+    description: "Check memory usage"
+    environment: rundeck-test
+    type: rundeck
+    job_id: cc526057-a539-468e-8476-fa666343f484
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: check-queue-depth
+    description: "Check message queue depth"
+    environment: rundeck-test
+    type: rundeck
+    job_id: be666a36-4982-4250-9e24-412843ed2aec
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: collect-metrics
+    description: "Collect system metrics"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 7ea89425-b618-4d8d-aeb7-4b96bf290ecd
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck
+
+  - name: verify-ssl-certs
+    description: "Verify SSL certificates"
+    environment: rundeck-test
+    type: rundeck
+    job_id: f14eb6b0-2c36-4171-9ad2-fada1ec14f46
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - monitoring
+      - rundeck

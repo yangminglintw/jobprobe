@@ -1,0 +1,12 @@
+# config.yaml - Full Integration Test Configuration
+# Tests 52 Rundeck jobs + 12 API endpoints
+
+defaults:
+  timeout: 5m
+  poll_interval: 5s
+
+output:
+  console:
+    colors: true
+    verbose: true
+  format: console

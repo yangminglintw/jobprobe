@@ -1,0 +1,109 @@
+# rundeck-sync.yaml - Sync Rundeck jobs
+# 7 jobs in this category
+
+jobs:
+
+  - name: replicate-data
+    description: "Replicate data to backup site"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 3b9683e3-c6bc-4909-84ba-b559b1fa65d0
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-cdn-assets
+    description: "Sync assets to CDN"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 777f4c2c-3157-4361-b749-36404493c62f
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-config
+    description: "Sync configuration across servers"
+    environment: rundeck-test
+    type: rundeck
+    job_id: ff1628f6-a741-43fd-8415-5045a4cb99da
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-inventory
+    description: "Sync inventory levels"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 9669cb70-9539-4615-a428-b28e35864ceb
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-orders
+    description: "Sync orders to warehouse"
+    environment: rundeck-test
+    type: rundeck
+    job_id: ddbd0c47-8e95-4df2-9941-1e6aeaf72429
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-products
+    description: "Sync products from ERP"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 5c0cf224-9dad-4d44-bd48-cf71f359e8f0
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck
+
+  - name: sync-users
+    description: "Sync users from LDAP"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 54341d03-6bf8-4eaa-a1f5-a8bd8cd5d27c
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - sync
+      - rundeck

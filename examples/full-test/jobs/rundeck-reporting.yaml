@@ -1,0 +1,64 @@
+# rundeck-reporting.yaml - Reporting Rundeck jobs
+# 4 jobs in this category
+
+jobs:
+
+  - name: export-metrics
+    description: "Export metrics to data warehouse"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 39fbe654-df09-45c4-950c-a64f79d96b16
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - reporting
+      - rundeck
+
+  - name: generate-daily-report
+    description: "Generate daily report"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 7b40dc93-8ef4-4831-aaa3-fdd8481f773a
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - reporting
+      - rundeck
+
+  - name: generate-weekly-summary
+    description: "Generate weekly summary"
+    environment: rundeck-test
+    type: rundeck
+    job_id: a4f181be-4e4f-4d30-a5d0-6cefd26d8b14
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - reporting
+      - rundeck
+
+  - name: send-status-email
+    description: "Send status email"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 613cf7f5-cf4a-45f9-98c9-7b6240dd0297
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - reporting
+      - rundeck

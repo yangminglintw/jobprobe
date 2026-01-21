@@ -1,0 +1,220 @@
+# api-endpoints.yaml - 12 HTTP API health checks
+# Testing various microservice endpoints
+
+jobs:
+  # ============================================================
+  # Core Health Endpoints (3)
+  # ============================================================
+
+  - name: api-health
+    description: "Main API health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /health
+    assertions:
+      status_code: 200
+      max_duration: 500ms
+      json:
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - health
+      - critical
+
+  - name: api-ready
+    description: "API readiness check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /ready
+    assertions:
+      status_code: 200
+      json:
+        - path: $.ready
+          equals: true
+        - path: $.database
+          equals: "connected"
+    tags:
+      - api
+      - readiness
+      - critical
+
+  - name: api-live
+    description: "API liveness check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /live
+    assertions:
+      status_code: 200
+      json:
+        - path: $.alive
+          equals: true
+    tags:
+      - api
+      - liveness
+      - critical
+
+  # ============================================================
+  # Infrastructure Endpoints (3)
+  # ============================================================
+
+  - name: api-metrics
+    description: "Prometheus metrics endpoint"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /metrics
+    assertions:
+      status_code: 200
+    tags:
+      - api
+      - monitoring
+      - infrastructure
+
+  - name: api-version
+    description: "Version information"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /version
+    assertions:
+      status_code: 200
+      json:
+        - path: $.version
+          equals: "1.0.0"
+    tags:
+      - api
+      - infrastructure
+
+  - name: api-status
+    description: "Overall API status"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/status
+    assertions:
+      status_code: 200
+      json:
+        - path: $.status
+          equals: "operational"
+    tags:
+      - api
+      - infrastructure
+      - critical
+
+  # ============================================================
+  # Microservice Health Endpoints (6)
+  # ============================================================
+
+  - name: users-service-health
+    description: "Users service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/users/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "users"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - users
+
+  - name: orders-service-health
+    description: "Orders service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/orders/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "orders"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - orders
+      - critical
+
+  - name: payments-service-health
+    description: "Payments service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/payments/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "payments"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - payments
+      - critical
+
+  - name: inventory-service-health
+    description: "Inventory service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/inventory/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "inventory"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - inventory
+
+  - name: notifications-service-health
+    description: "Notifications service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/notifications/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "notifications"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - notifications
+
+  - name: search-service-health
+    description: "Search service health check"
+    environment: mock-api
+    type: http
+    method: GET
+    path: /api/v1/search/health
+    assertions:
+      status_code: 200
+      json:
+        - path: $.service
+          equals: "search"
+        - path: $.status
+          equals: "healthy"
+    tags:
+      - api
+      - microservice
+      - search

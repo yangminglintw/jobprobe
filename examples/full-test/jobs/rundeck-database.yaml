@@ -1,0 +1,164 @@
+# rundeck-database.yaml - Database Rundeck jobs
+# 10 jobs in this category
+
+jobs:
+
+  - name: analyze-tables
+    description: "Analyze database tables"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 35a14275-b288-460a-92b1-6beae282e477
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: backup-mysql-prod
+    description: "Backup MySQL production database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: b0bcd645-24da-446b-baf4-543db8031b61
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: backup-mysql-staging
+    description: "Backup MySQL staging database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: ef5651fc-cf74-4a8b-9b65-880a2c5bb24c
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: backup-postgres-prod
+    description: "Backup PostgreSQL production database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 65878c20-7edd-4adb-8d87-7248e270a862
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: check-replication
+    description: "Check database replication status"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 5d2e1659-1aea-4d4f-af32-8694b166748f
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: optimize-indexes
+    description: "Optimize database indexes"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 0d606bbf-d2f8-4d30-92ca-fcf1518794d3
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: restore-mysql-prod
+    description: "Restore MySQL production database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: f80282a2-9879-466d-a5b1-f8577a9499dd
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: restore-postgres-prod
+    description: "Restore PostgreSQL production database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: dff9df80-ecf9-4f3a-b1b6-1029558e947e
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: rotate-db-credentials
+    description: "Rotate database credentials"
+    environment: rundeck-test
+    type: rundeck
+    job_id: 32c9b7f7-9f05-45c4-8300-1e88e05a437e
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical
+
+  - name: vacuum-postgres
+    description: "Vacuum PostgreSQL database"
+    environment: rundeck-test
+    type: rundeck
+    job_id: c83e2641-504e-4fb0-af36-85bcb6633ae4
+    project: jprobe-test
+    timeout: 5m
+    poll_interval: 5s
+    assertions:
+      status: succeeded
+      max_duration: 3m
+    tags:
+      - database
+      - rundeck
+      - critical

@@ -1,0 +1,18 @@
+# environments.yaml - Full test scenario
+# 2 environments: Rundeck and Mock API
+
+environments:
+  # Rundeck test environment
+  rundeck-test:
+    type: rundeck
+    url: http://localhost:4440
+    api_version: 41
+    auth:
+      token: ${RUNDECK_TOKEN}
+
+  # Mock API environment
+  mock-api:
+    type: http
+    url: http://localhost:8000
+    auth:
+      type: none
