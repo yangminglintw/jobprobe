@@ -1,10 +1,10 @@
 # JProbe
 
-A lightweight CLI tool for verifying Rundeck jobs and API endpoints are working correctly.
+Unified health check CLI for Rundeck jobs and HTTP endpoints.
 
 ## Features
 
-- **Rundeck Job Verification** - Trigger jobs, poll execution status, and verify completion
+- **Rundeck Job Verification** - Trigger jobs, poll execution status, verify completion
 - **HTTP Health Checks** - Test API endpoints with status code and JSON assertions
 - **Flexible Configuration** - YAML-based configs with environment variable support
 - **Multiple Output Formats** - Console (with colors) and JSON output
@@ -15,17 +15,13 @@ A lightweight CLI tool for verifying Rundeck jobs and API endpoints are working 
 
 ### Installation
 
-#### From Source
-
 ```bash
+# From source
 git clone https://github.com/yangminglintw/jobprobe.git
 cd jobprobe
 make build
-```
 
-#### Using Go
-
-```bash
+# Using Go
 go install github.com/yangminglintw/jobprobe@latest
 ```
 
@@ -50,7 +46,7 @@ jprobe run --dry-run
 
 ## Configuration
 
-JProbe uses YAML configuration files organized in a directory structure:
+### Directory Structure
 
 ```
 configs/
@@ -61,18 +57,12 @@ configs/
     └── rundeck-jobs.yaml # Rundeck jobs
 ```
 
-### Global Config (config.yaml)
+### Global Settings (config.yaml)
 
 ```yaml
 defaults:
   timeout: 10m
   poll_interval: 10s
-
-output:
-  console:
-    colors: true
-    verbose: false
-  format: console
 ```
 
 ### Environments (environments.yaml)
@@ -96,12 +86,10 @@ environments:
 
 ### Jobs (jobs/*.yaml)
 
-#### HTTP Health Check
-
 ```yaml
 jobs:
+  # HTTP Health Check
   - name: api-health
-    description: "API health check"
     environment: api-prod
     type: http
     method: GET
@@ -112,43 +100,48 @@ jobs:
       json:
         - path: $.status
           equals: "healthy"
-    tags:
-      - critical
-      - api
-```
+    tags: [critical, api]
 
-#### Rundeck Job
-
-```yaml
-jobs:
+  # Rundeck Job
   - name: backup-job
-    description: "Database backup job"
     environment: rundeck-prod
     type: rundeck
     job_id: abc-123-uuid
     project: production
-    options:
-      database: main
     timeout: 30m
     assertions:
       status: succeeded
-      max_duration: 25m
-    tags:
-      - database
-      - backup
+    tags: [database, backup]
 ```
+
+### Environment Variables
+
+Use `${VAR_NAME}` syntax in configuration files:
+
+```yaml
+auth:
+  token: ${RUNDECK_TOKEN}
+```
+
+### Authentication Types
+
+| Type | Usage |
+|------|-------|
+| bearer | `auth: { type: bearer, token: ${TOKEN} }` |
+| basic | `auth: { type: basic, username: user, password: ${PASS} }` |
+| api_key | `auth: { type: api_key, header: X-API-Key, api_key: ${KEY} }` |
 
 ## CLI Reference
 
-### run
+### jprobe run
 
-Execute health checks against configured jobs.
+Execute health checks.
 
-```bash
+```
 jprobe run [flags]
 
 Flags:
-  -c, --config string   Config directory or file path (default ".")
+  -c, --config string   Config directory (default ".")
   -n, --name strings    Run specific jobs by name
   -t, --tags strings    Run jobs with specific tags
   -e, --env string      Run jobs for specific environment
@@ -158,28 +151,19 @@ Flags:
   -v, --verbose         Verbose output
 ```
 
-### list
+### jprobe list
 
-List configured jobs or environments.
+List configured resources.
 
 ```bash
-# List all jobs
-jprobe list jobs
-
-# List jobs with specific tag
-jprobe list jobs --tags critical
-
-# List all environments
-jprobe list environments
+jprobe list jobs              # List all jobs
+jprobe list jobs --tags critical  # List jobs with tag
+jprobe list environments      # List all environments
 ```
 
-### version
+### jprobe version
 
 Print version information.
-
-```bash
-jprobe version
-```
 
 ## Output Examples
 
@@ -189,36 +173,19 @@ jprobe version
 JProbe v0.1.0
 ========================================
 
-Loading configuration...
-  Environments: 2 loaded
-  Jobs: 3 loaded
-
-[1/3] api-health (api-prod)
+[1/2] api-health (api-prod)
       GET https://api.example.com/health
       Status: 200 (45ms)
       [PASS]
 
-[2/3] api-readiness (api-prod)
-      GET https://api.example.com/ready
-      Status: 200 (32ms)
-      [PASS]
-
-[3/3] backup-job (rundeck-prod)
+[2/2] backup-job (rundeck-prod)
       Triggering job abc-123-uuid...
-      Execution #1234 started
-      Polling... (10s) status=running
+      Polling... status=running
       Completed in 2m15s
       [PASS]
 
 ========================================
-Summary
-========================================
-Total:    3
-Passed:   3
-Failed:   0
-Duration: 2m20s
-
-All jobs passed!
+Summary: 2 passed, 0 failed
 ```
 
 ### JSON Output
@@ -230,100 +197,26 @@ jprobe run --output json --pretty
 ```json
 {
   "version": "0.1.0",
-  "started_at": "2024-01-19T10:30:00Z",
-  "finished_at": "2024-01-19T10:32:20Z",
-  "duration_ms": 140000,
-  "summary": {
-    "total": 3,
-    "passed": 3,
-    "failed": 0
-  },
+  "summary": { "total": 2, "passed": 2, "failed": 0 },
   "results": [
-    {
-      "name": "api-health",
-      "environment": "api-prod",
-      "type": "http",
-      "status": "succeeded",
-      "duration_ms": 45
-    }
+    { "name": "api-health", "status": "succeeded", "duration_ms": 45 }
   ]
 }
 ```
 
 ## Docker Usage
 
-### Using Docker Compose
-
 ```bash
-# Start mock API for testing
-docker compose up -d mock-api
-
-# Run jprobe in Docker
-docker compose run --rm jprobe run --config /etc/jprobe
-
-# Stop services
-docker compose down
-```
-
-### Building Docker Image
-
-```bash
+# Build image
 docker build -t jprobe .
-docker run -v ./configs:/etc/jprobe jprobe run --config /etc/jprobe
-```
 
-## Development
+# Run with mounted config
+docker run -v ./configs:/etc/jprobe \
+  -e RUNDECK_TOKEN=$RUNDECK_TOKEN \
+  jprobe run --config /etc/jprobe
 
-### Prerequisites
-
-- Go 1.23+
-- Make
-- Docker (optional)
-
-### Building
-
-```bash
-# Build binary
-make build
-
-# Build for all platforms
-make build-all
-
-# Run tests
-make test
-
-# Run with coverage
-make test-coverage
-```
-
-### Project Structure
-
-```
-jobprobe/
-├── cmd/                    # CLI commands
-├── internal/
-│   ├── config/            # Configuration loading
-│   ├── runner/            # Job execution engine
-│   ├── providers/         # Provider implementations
-│   │   ├── rundeck/       # Rundeck provider
-│   │   └── http/          # HTTP provider
-│   └── output/            # Output formatters
-├── configs/               # Example configurations
-├── test/                  # Test resources
-└── docs/                  # Documentation
-```
-
-### Adding a New Provider
-
-1. Create a new package under `internal/providers/`
-2. Implement the `Provider` interface
-3. Register the provider in `init()`
-
-```go
-type Provider interface {
-    Name() string
-    Execute(ctx context.Context, job config.Job, env config.Environment) (*Result, error)
-}
+# Using Docker Compose
+docker compose run --rm jprobe run --config /etc/jprobe
 ```
 
 ## Exit Codes
@@ -335,19 +228,11 @@ type Provider interface {
 | 2 | Configuration error |
 | 3 | Runtime error |
 
-## Environment Variables
+## Documentation
 
-JProbe supports environment variable expansion in configuration files using `${VAR_NAME}` syntax:
-
-```yaml
-auth:
-  token: ${RUNDECK_TOKEN}
-```
+- [Architecture](docs/ARCHITECTURE.md) - Technical deep dive for engineers
+- [Specification](docs/SPEC.md) - Requirements and roadmap
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
