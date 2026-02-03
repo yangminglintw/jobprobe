@@ -142,12 +142,12 @@
 | 分類 | 工具名稱 | 配置/程式碼 | 授權 | 商用 | GitHub Stars | 活躍度 |
 |------|----------|:-----------:|------|:----:|-------------:|:------:|
 | API 測試 | Hurl | 配置（.hurl） | Apache 2.0 | 可 | ~15k | 活躍 |
-| API 測試 | k6 | 程式碼（JS） | AGPL-3.0 | 注意 | ~26k | 活躍 |
+| API 測試 | k6 | 程式碼（JS） | AGPL-3.0 | 可 | ~26k | 活躍 |
 | API 測試 | Step CI | 配置（YAML） | MPL-2.0 | 可 | ~2k | 活躍 |
 | API 測試 | Tavern | 配置（YAML） | MIT | 可 | ~1k | 維護中 |
+| API 測試 | Bruno | 配置（JSON+JS） | MIT | 可 | ~29k | 活躍 |
 | HTTP 探測 | httpx | 配置（參數） | MIT | 可 | ~8k | 活躍 |
 | HTTP 探測 | httprobe | 配置（參數） | MIT | 可 | ~3k | 維護中 |
-| API 驗證 | Schemathesis | 配置（自動） | MIT | 可 | ~2k | 活躍 |
 | 監控 | Blackbox Exporter | 配置（YAML） | Apache 2.0 | 可 | ~5k | 活躍 |
 | 通用 | curl + shell | 程式碼（Shell） | MIT | 可 | N/A | N/A |
 
@@ -165,7 +165,7 @@
 | MIT | 可 | 無限制 |
 | Apache 2.0 | 可 | 需保留版權聲明 |
 | MPL-2.0 | 可 | 修改檔案需開源 |
-| AGPL-3.0 | 注意 | 若作為服務提供，可能需開源 |
+| AGPL-3.0 | 可 | 僅修改並散佈 k6 本身時需開源；執行測試不受影響 |
 
 ### 3.3 工具分類
 
@@ -173,7 +173,7 @@
 
 | 類型 | 工具 | 多步驟 API | 適用場景 |
 |------|------|:----------:|----------|
-| API 測試 | Hurl、Step CI、k6、Tavern | 支援 | 非同步 API 測試 |
+| API 測試 | Hurl、Step CI、k6、Tavern、Bruno | 支援 | 非同步 API 測試 |
 | HTTP 探測 | httpx、httprobe | 不支援 | 存活檢查、批量探測 |
 | 監控 | Blackbox Exporter | 不支援 | 持續監控 |
 
@@ -185,11 +185,22 @@
 | **Step CI** | 支援 | 支援 | 支援 | YAML workflow |
 | **k6** | 支援 | 支援 | 支援 | JavaScript 腳本 |
 | **Tavern** | 支援 | 支援 | 支援 | YAML stages |
+| **Bruno** | 支援 | 支援 | 支援 | JSON 配置 + JS script |
 | httpx | 不支援 | 不支援 | 不支援 | CLI 參數 |
 | Blackbox | 不支援 | 不支援 | 不支援 | YAML（單一端點） |
 | curl | 不支援 | 不支援 | 不支援 | 需 shell 包裝 |
 
-### 3.5 綜合評分表
+### 3.5 認證機制支援比較
+
+| 工具 | API Key | Bearer Token | OAuth 2.0 | 環境變數 |
+|------|:-------:|:------------:|:---------:|:--------:|
+| Hurl | ✓ | ✓ | 需多步驟 | ✓ |
+| Step CI | ✓ | ✓ | ✓（內建） | ✓ |
+| k6 | ✓ | ✓ | ✓（程式碼）| ✓ |
+| Tavern | ✓ | ✓ | 需 plugin | ✓ |
+| Bruno | ✓ | ✓ | ✓（內建） | ✓ |
+
+### 3.6 綜合評分表
 
 | 工具 | 非同步處理<br>(30%) | 內容驗證<br>(25%) | 維護成本<br>(30%) | 整合友善<br>(15%) | **加權總分** |
 |------|:---:|:---:|:---:|:---:|:---:|
@@ -198,12 +209,13 @@
 | **Tavern** | 4 | 4 | 4 | 4 | **4.00** |
 | **k6** | 5 | 5 | 2 | 4 | **3.95** |
 | **httpx** | 2 | 4 | 5 | 5 | **3.85** |
+| **Bruno** | 4 | 4 | 3 | 4 | **3.70** |
 | **Blackbox Exporter** | 2 | 3 | 5 | 5 | **3.60** |
 | **Shell + curl** | 4 | 3 | 1 | 5 | **3.00** |
 
-### 3.6 工具詳細評估（依評分排序）
+### 3.7 工具詳細評估（依評分排序）
 
-#### 3.6.1 Hurl（總分：4.55）
+#### 3.7.1 Hurl（總分：4.55）
 
 | 資訊 | 內容 |
 |------|------|
@@ -243,7 +255,7 @@ jsonpath "$.status" == "completed"
 
 ---
 
-#### 3.6.2 Step CI（總分：4.45）
+#### 3.7.2 Step CI（總分：4.45）
 
 | 資訊 | 內容 |
 |------|------|
@@ -293,7 +305,7 @@ tests:
 
 ---
 
-#### 3.6.3 Tavern（總分：4.00）
+#### 3.7.3 Tavern（總分：4.00）
 
 | 資訊 | 內容 |
 |------|------|
@@ -341,7 +353,7 @@ stages:
 
 ---
 
-#### 3.6.4 k6（總分：3.95）
+#### 3.7.4 k6（總分：3.95）
 
 | 資訊 | 內容 |
 |------|------|
@@ -393,7 +405,37 @@ export default function() {
 
 ---
 
-#### 3.6.5 httpx（總分：3.85）
+#### 3.7.5 Bruno（總分：3.70）
+
+| 資訊 | 內容 |
+|------|------|
+| 官方網站 | https://www.usebruno.com |
+| GitHub | https://github.com/usebruno/bruno |
+| 配置方式 | JSON 配置 + JavaScript script |
+
+**多步驟 API 範例：**
+
+```javascript
+// 步驟 1：觸發任務（Post-request script）
+bru.setVar("task_id", res.body.id);
+
+// 步驟 2：輪詢狀態
+// GET https://api.example.com/tasks/{{task_id}}/status
+// 需搭配 bru.runRequest() 實現 retry 邏輯
+```
+
+**評分：**
+
+| 指標 | 分數 | 說明 |
+|------|:----:|------|
+| 非同步處理 | 4 | 支援 `bru.runRequest()` + 變數傳遞 |
+| 內容驗證 | 4 | JavaScript assertions |
+| 維護成本 | 3 | 混合模式（JSON 配置 + JS script） |
+| 整合友善 | 4 | CLI 支援、JUnit reporter |
+
+---
+
+#### 3.7.6 httpx（總分：3.85）
 
 | 資訊 | 內容 |
 |------|------|
@@ -418,7 +460,7 @@ httpx 設計用於單一請求探測，不支援多步驟工作流程。
 
 ---
 
-#### 3.6.6 Blackbox Exporter（總分：3.60）
+#### 3.7.7 Blackbox Exporter（總分：3.60）
 
 | 資訊 | 內容 |
 |------|------|
@@ -443,7 +485,7 @@ Blackbox Exporter 設計用於持續監控單一端點，不支援多步驟工�
 
 ---
 
-#### 3.6.7 Shell Script + curl（總分：3.00）
+#### 3.7.8 Shell Script + curl（總分：3.00）
 
 | 資訊 | 內容 |
 |------|------|
